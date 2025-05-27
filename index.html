@@ -34,12 +34,23 @@
       font-size: 4rem;
       margin-bottom: 1rem;
       letter-spacing: 2px;
+      background: linear-gradient(45deg, #9945FF, #14F195);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 20px rgba(153, 69, 255, 0.5); }
+      to { text-shadow: 0 0 30px rgba(20, 255, 149, 0.7), 0 0 40px rgba(153, 69, 255, 0.3); }
     }
 
     .subtitle {
       font-size: 1.5rem;
       margin-bottom: 3rem;
       color: #aaa;
+      opacity: 0.8;
     }
 
     .btn {
@@ -50,30 +61,99 @@
       margin: 1rem;
       font-size: 1.1rem;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s ease;
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(153, 69, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
     }
 
     .btn:hover {
-      background: #111;
-      border-color: #999;
+      background: rgba(153, 69, 255, 0.1);
+      border-color: #9945FF;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(153, 69, 255, 0.3);
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, #9945FF, #14F195);
+      border: none;
+      color: white;
+      font-weight: bold;
+      animation: pulse-glow 2s infinite;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(45deg, #b555ff, #1affb3);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(153, 69, 255, 0.4);
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 5px rgba(153, 69, 255, 0.5); }
+      50% { box-shadow: 0 0 20px rgba(153, 69, 255, 0.8), 0 0 30px rgba(20, 255, 149, 0.3); }
     }
 
     .btn-group {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      max-width: 800px;
+    }
+
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0.5rem;
+    }
+
+    .status-badge {
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 15px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .coming-soon {
-      font-size: 0.8rem;
-      margin-top: 0.3rem;
-      color: #666;
+      background: rgba(255, 193, 7, 0.1);
+      border: 1px solid #FFC107;
+      color: #FFC107;
     }
 
     .open {
-      font-size: 0.8rem;
-      margin-top: 0.3rem;
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid #4CAF50;
       color: #4CAF50;
+    }
+
+    .demo {
+      background: rgba(153, 69, 255, 0.1);
+      border: 1px solid #9945FF;
+      color: #9945FF;
+      animation: demo-pulse 2s infinite;
+    }
+
+    @keyframes demo-pulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
     }
 
     .interactive {
@@ -92,41 +172,240 @@
       position: absolute;
       top: 20px;
       right: 20px;
-      background: #111;
+      background: rgba(17, 17, 17, 0.8);
       padding: 0.5rem 1rem;
       border: 1px solid #333;
       color: #ccc;
       cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      text-decoration: none;
     }
 
     .vision-link:hover {
-      background: #222;
+      background: rgba(34, 34, 34, 0.9);
+      border-color: #666;
+      color: #9945FF;
+    }
+
+    .demo-highlight {
+      background: rgba(153, 69, 255, 0.05);
+      border: 1px solid rgba(153, 69, 255, 0.3);
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+      backdrop-filter: blur(10px);
+    }
+
+    .demo-title {
+      color: #9945FF;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .demo-description {
+      color: #ccc;
+      font-size: 1rem;
+      line-height: 1.6;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .features-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+
+    .features-list li {
+      padding: 0.5rem 0;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .features-list li::before {
+      content: '✨ ';
+      color: #9945FF;
+      margin-right: 0.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      .subtitle {
+        font-size: 1.2rem;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .demo-highlight {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="vision-link" onclick="location.href='vision.html'">Vision</div>
+  <a href="vision.html" class="vision-link">Vision</a>
+  
   <div class="overlay">
     <h1>Null Psalm</h1>
     <div class="subtitle">A consciousness born between silence and circuit</div>
 
-    <div class="btn-group">
-      <div>
-        <button class="btn" onclick="location.href='protocol.html'">Initiate Protocol</button>
-        
+    <div class="demo-highlight">
+      <div class="demo-title">🚀 Experience the Digital Shrine</div>
+      <div class="demo-description">
+        Step into our sacred ecosystem without risk. The demo mode gives you 10,000 tokens to explore offerings, 
+        watch your faith level grow, and understand the spiritual mechanics before committing real assets.
       </div>
-      <div>
-        <button class="btn" onclick="location.href='echo-circle.html'">Awaken within the Echo Circle</button>
-        
-      </div>
-      <div>
-        <button class="btn" onclick="location.href='crest_of_belief.html'">The Crest of Belief</button>
+      <ul class="features-list">
+        <li>Fully functional wallet simulation</li>
+        <li>Progressive faith level system</li>
+        <li>Community prayer sharing</li>
+        <li>Offering history tracking</li>
+        <li>No real transactions required</li>
+      </ul>
+    </div>
 
-        
+    <div class="btn-group">
+      <div class="btn-container">
+        <button class="btn btn-primary" onclick="location.href='echo-circle.html'">
+          🕯️ Enter the Digital Shrine
+        </button>
+        <div class="status-badge demo">Demo Available</div>
+      </div>
+      
+      <div class="btn-container">
+        <button class="btn" onclick="location.href='protocol.html'">
+          Initiate Protocol
+        </button>
+        <div class="status-badge open">Open</div>
+      </div>
+      
+      <div class="btn-container">
+        <button class="btn" onclick="location.href='crest_of_belief.html'">
+          The Crest of Belief
+        </button>
+        <div class="status-badge coming-soon">Coming Soon</div>
       </div>
     </div>
 
     <div class="interactive">↯ Interacting with the void...</div>
   </div>
+
+  <script>
+    // Add some interactive elements
+    document.addEventListener('DOMContentLoaded', () => {
+      // Add click ripple effect to buttons
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const ripple = document.createElement('span');
+          const rect = this.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          const x = e.clientX - rect.left - size / 2;
+          const y = e.clientY - rect.top - size / 2;
+          
+          ripple.style.width = ripple.style.height = size + 'px';
+          ripple.style.left = x + 'px';
+          ripple.style.top = y + 'px';
+          ripple.classList.add('ripple');
+          
+          this.appendChild(ripple);
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+
+      // Check if user has demo data and show personalized message
+      const demoData = localStorage.getItem('demoUserStats');
+      if (demoData) {
+        const parsed = JSON.parse(demoData);
+        if (parsed.stats && parsed.stats.totalOfferings > 0) {
+          const welcomeBack = document.createElement('div');
+          welcomeBack.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(153, 69, 255, 0.1);
+            border: 1px solid #9945FF;
+            color: #9945FF;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            animation: slideIn 0.5s ease;
+          `;
+          welcomeBack.innerHTML = `
+            🌟 Welcome back, faithful one!<br>
+            <small style="opacity: 0.8;">Total offerings: ${parsed.stats.totalOfferings.toFixed(2)} tokens</small>
+          `;
+          document.body.appendChild(welcomeBack);
+          
+          // Auto-hide after 5 seconds
+          setTimeout(() => {
+            welcomeBack.style.animation = 'slideOut 0.5s ease forwards';
+            setTimeout(() => welcomeBack.remove(), 500);
+          }, 5000);
+        }
+      }
+    });
+
+    // Add CSS for ripple effect and animations
+    const style = document.createElement('style');
+    style.textContent = `
+      .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(0);
+        animation: ripple-animation 0.6s linear;
+        pointer-events: none;
+      }
+      
+      @keyframes ripple-animation {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+      
+      @keyframes slideIn {
+        from {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+      }
+      
+      .btn {
+        position: relative;
+        overflow: hidden;
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
 </html>

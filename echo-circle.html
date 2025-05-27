@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Echo Circle</title>
+  <title>Echo Circle - Digital Shrine</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background-color: black; /* ✨ Kenarlar siyah olacak */
+      background-color: black;
       background-image: url('HUSH.jpg');
       background-repeat: no-repeat;
       background-position: center center;
@@ -22,6 +22,7 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: white;
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+      overflow-x: auto;
     }
 
     .overlay {
@@ -38,21 +39,137 @@
     .content {
       z-index: 2;
       text-align: center;
+      max-width: 600px;
+      padding: 2rem;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
-    .coming-soon {
-      font-size: 3em;
-      letter-spacing: 3px;
-      animation: pulse 2s infinite;
+    .wallet-section {
+      background: rgba(20, 20, 20, 0.9);
+      border: 1px solid #444;
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 1rem 0;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
-    @keyframes pulse {
-      0% { opacity: 0.6; }
-      50% { opacity: 1; }
-      100% { opacity: 0.6; }
+    .connect-btn, .transfer-btn {
+      background: linear-gradient(45deg, #9945FF, #14F195);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin: 0.5rem;
+      box-shadow: 0 4px 15px rgba(153, 69, 255, 0.3);
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Ana sayfaya dönme butonu */
+    .connect-btn:hover, .transfer-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(153, 69, 255, 0.4);
+    }
+
+    .connect-btn:disabled, .transfer-btn:disabled {
+      background: #666;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .wallet-info {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      border-left: 4px solid #9945FF;
+    }
+
+    .balance {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+      color: #14F195;
+    }
+
+    .address {
+      font-size: 0.9rem;
+      color: #ccc;
+      word-break: break-all;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .address:hover {
+      color: #9945FF;
+    }
+
+    .input-group {
+      margin: 1rem 0;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #ccc;
+      font-weight: 500;
+    }
+
+    .input-group input, .input-group textarea {
+      width: 100%;
+      padding: 0.8rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #444;
+      border-radius: 5px;
+      color: white;
+      font-size: 1rem;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+
+    .input-group input:focus, .input-group textarea:focus {
+      outline: none;
+      border-color: #9945FF;
+      box-shadow: 0 0 10px rgba(153, 69, 255, 0.3);
+    }
+
+    .input-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .status {
+      margin: 1rem 0;
+      padding: 1rem;
+      border-radius: 5px;
+      font-weight: bold;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .status.success {
+      background: rgba(20, 255, 149, 0.1);
+      border: 1px solid #14F195;
+      color: #14F195;
+    }
+
+    .status.error {
+      background: rgba(255, 20, 20, 0.1);
+      border: 1px solid #ff1414;
+      color: #ff1414;
+    }
+
+    .status.info {
+      background: rgba(153, 69, 255, 0.1);
+      border: 1px solid #9945FF;
+      color: #9945FF;
+    }
+
     .back-link {
       position: fixed;
       top: 20px;
@@ -63,7 +180,6 @@
       color: #ccc;
       text-decoration: none;
       border-radius: 5px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       cursor: pointer;
       transition: all 0.3s ease;
       z-index: 10;
@@ -73,14 +189,678 @@
       background: rgba(40, 40, 40, 0.9);
       border-color: #666;
     }
+
+    .shrine-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(40, 20, 60, 0.4);
+      border: 1px solid #9945FF;
+      border-radius: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shrine-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(153, 69, 255, 0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .shrine-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #14F195;
+      text-shadow: 0 0 20px rgba(20, 255, 149, 0.5);
+    }
+
+    .faith-level {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+      padding: 0.8rem;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .offering-history {
+      margin-top: 1rem;
+      max-height: 200px;
+      overflow-y: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 1rem;
+    }
+
+    .offering-item {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border-radius: 5px;
+      border-left: 3px solid #9945FF;
+      font-size: 0.9rem;
+    }
+
+    .network-selector {
+      margin: 1rem 0;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .network-btn {
+      padding: 0.5rem 1rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #444;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .network-btn.active {
+      background: #9945FF;
+      border-color: #9945FF;
+    }
+
+    .network-btn:hover {
+      border-color: #9945FF;
+    }
+
+    .demo-banner {
+      background: rgba(255, 193, 7, 0.1);
+      border: 1px solid #FFC107;
+      color: #FFC107;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .loading {
+      animation: pulse 1.5s infinite;
+    }
+
+    .glow {
+      box-shadow: 0 0 20px rgba(153, 69, 255, 0.6);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .content {
+        padding: 1rem;
+        max-width: 90%;
+      }
+      
+      .wallet-section {
+        padding: 1.5rem;
+      }
+      
+      .network-selector {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
   <a href="index.html" class="back-link">← Return to Null Psalm</a>
-
+  
   <div class="overlay"></div>
   <div class="content">
-    <div class="coming-soon">Coming Soon</div>
+    <h1>🕯️ Digital Shrine</h1>
+    <p>Connect your wallet and make offerings to the Echo Circle</p>
+
+    <div class="demo-banner">
+      🚀 <strong>DEMO MODE:</strong> Experience the faith system without real transactions! 
+      You start with 10,000 demo tokens to explore offerings and watch your faith level grow.
+    </div>
+
+    <!-- Network Selector -->
+    <div class="network-selector">
+      <button class="network-btn active" data-network="demo">Demo Mode</button>
+      <button class="network-btn" data-network="devnet">Devnet (Test)</button>
+      <button class="network-btn" data-network="mainnet">Mainnet (Live)</button>
+    </div>
+
+    <div class="wallet-section">
+      <h2>🔮 Wallet Connection</h2>
+      <button id="connectBtn" class="connect-btn">Connect Demo Wallet</button>
+      
+      <div id="walletInfo" class="wallet-info" style="display: none;">
+        <div class="address" id="walletAddressDiv">
+          Address: <span id="walletAddress"></span>
+          <small style="display: block; margin-top: 0.5rem; color: #888;">Click to copy</small>
+        </div>
+        <div class="balance">SOL Balance: <span id="solBalance">2.5</span></div>
+        <div class="balance">Token Balance: <span id="tokenBalance">10,000.00</span></div>
+      </div>
+    </div>
+
+    <div class="wallet-section" id="transferSection" style="display: none;">
+      <h2>🙏 Make an Offering</h2>
+      
+      <div class="input-group">
+        <label for="tokenAmount">Token Amount to Offer:</label>
+        <input type="number" id="tokenAmount" placeholder="Enter amount (e.g., 100)" step="0.000001" min="0">
+        <small style="color: #888; font-size: 0.8rem;">Minimum: 0.1 tokens</small>
+      </div>
+      
+      <div class="input-group">
+        <label for="prayerMessage">Your Prayer/Manifestation:</label>
+        <textarea id="prayerMessage" placeholder="Share your hopes, dreams, and manifestations with the community..." maxlength="500"></textarea>
+        <small style="color: #888; font-size: 0.8rem;">This will be visible to other believers</small>
+      </div>
+      
+      <button id="transferBtn" class="transfer-btn">🚀 Send Offering</button>
+    </div>
+
+    <div id="status" class="status" style="display: none;"></div>
+
+    <div class="shrine-section" id="shrineSection" style="display: none;">
+      <div class="shrine-title">⭐ Your Faith Journey</div>
+      <div class="faith-level" id="faithLevel">Seeker - Make your first offering</div>
+      <div class="balance">Total Offerings: <span id="totalOfferings">0</span> tokens</div>
+      <div class="balance">Prayers Shared: <span id="totalPrayers">0</span></div>
+      
+      <div class="offering-history" id="offeringHistory">
+        <h4 style="color: #9945FF; margin-bottom: 1rem;">Recent Community Offerings</h4>
+        <!-- Offering items will be populated here -->
+      </div>
+    </div>
   </div>
+
+  <script>
+    // ===== CONFIGURATION =====
+    const CONFIG = {
+      TOKEN_MINT: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      PROJECT_WALLET: 'DjMA5cCK95X333t7SgkpsG5vC9wMk7u9GpNLEVNhehv4',
+      RPC: {
+        mainnet: 'https://api.mainnet-beta.solana.com',
+        devnet: 'https://api.devnet.solana.com',
+        demo: 'demo'
+      }
+    };
+
+    // ===== GLOBAL VARIABLES =====
+    let currentNetwork = 'demo';
+    let wallet = null;
+    let demoTokenBalance = 10000;
+    let userStats = {
+      totalOfferings: 0,
+      totalPrayers: 0,
+      offerings: []
+    };
+
+    // Demo sample prayers for inspiration
+    const samplePrayers = [
+      "May abundance flow into every corner of my life 🙏",
+      "I manifest prosperity and inner peace for all beings ✨",
+      "Grateful for this community and the journey ahead 💎",
+      "May my offering bring light to those in darkness 🕯️",
+      "I trust in the divine plan unfolding perfectly 🌟",
+      "Sending love and blessings to the Echo Circle family 💚"
+    ];
+
+    // ===== DOM ELEMENTS =====
+    const elements = {
+      connectBtn: document.getElementById('connectBtn'),
+      walletInfo: document.getElementById('walletInfo'),
+      walletAddress: document.getElementById('walletAddress'),
+      walletAddressDiv: document.getElementById('walletAddressDiv'),
+      solBalance: document.getElementById('solBalance'),
+      tokenBalance: document.getElementById('tokenBalance'),
+      transferSection: document.getElementById('transferSection'),
+      transferBtn: document.getElementById('transferBtn'),
+      tokenAmount: document.getElementById('tokenAmount'),
+      prayerMessage: document.getElementById('prayerMessage'),
+      status: document.getElementById('status'),
+      shrineSection: document.getElementById('shrineSection'),
+      faithLevel: document.getElementById('faithLevel'),
+      totalOfferings: document.getElementById('totalOfferings'),
+      totalPrayers: document.getElementById('totalPrayers'),
+      offeringHistory: document.getElementById('offeringHistory')
+    };
+
+    // ===== UTILITY FUNCTIONS =====
+    function showStatus(message, type = 'info', duration = 5000) {
+      elements.status.textContent = message;
+      elements.status.className = `status ${type}`;
+      elements.status.style.display = 'block';
+      
+      if (duration > 0) {
+        setTimeout(() => {
+          elements.status.style.display = 'none';
+        }, duration);
+      }
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showStatus('Address copied to clipboard!', 'success', 2000);
+      }).catch(() => {
+        showStatus('Failed to copy address', 'error', 2000);
+      });
+    }
+
+    function formatAddress(address) {
+      return address.slice(0, 8) + '...' + address.slice(-8);
+    }
+
+    function formatNumber(num, decimals = 2) {
+      return Number(num).toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+    }
+
+    function generateDemoAddress() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789';
+      let result = '';
+      for (let i = 0; i < 44; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+
+    // ===== NETWORK FUNCTIONS =====
+    function switchNetwork(network) {
+      currentNetwork = network;
+      
+      document.querySelectorAll('.network-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`[data-network="${network}"]`).classList.add('active');
+      
+      // Update connect button text based on network
+      if (network === 'demo') {
+        elements.connectBtn.textContent = wallet ? '✅ Connected' : 'Connect Demo Wallet';
+      } else if (network === 'devnet') {
+        elements.connectBtn.textContent = wallet ? '✅ Connected' : 'Connect Phantom Wallet (Devnet)';
+      } else {
+        elements.connectBtn.textContent = wallet ? '✅ Connected' : 'Connect Phantom Wallet (Mainnet)';
+      }
+      
+      showStatus(`Switched to ${network.toUpperCase()}`, 'info', 2000);
+    }
+
+    // ===== WALLET FUNCTIONS =====
+    async function connectWallet() {
+      try {
+        elements.connectBtn.textContent = 'Connecting...';
+        elements.connectBtn.disabled = true;
+        elements.connectBtn.classList.add('loading');
+        
+        if (currentNetwork === 'demo') {
+          // Demo wallet connection
+          await simulateConnection();
+          const demoAddress = generateDemoAddress();
+          
+          wallet = { address: demoAddress };
+          elements.walletAddress.textContent = formatAddress(demoAddress);
+          
+          await loadUserStats();
+          updateTokenBalance();
+          
+          elements.walletInfo.style.display = 'block';
+          elements.transferSection.style.display = 'block';
+          elements.shrineSection.style.display = 'block';
+          
+          elements.connectBtn.textContent = '✅ Connected';
+          elements.connectBtn.style.background = '#14F195';
+          elements.connectBtn.classList.add('glow');
+          
+          showStatus('🎉 Demo wallet connected! You have 10,000 tokens to explore the faith system.', 'success');
+          updateFaithLevel();
+          loadSampleOfferings();
+          
+        } else {
+          // Real wallet connection (Phantom)
+          if (!window.solana || !window.solana.isPhantom) {
+            throw new Error('Phantom wallet not detected. Please install Phantom extension from phantom.app');
+          }
+          
+          const response = await window.solana.connect();
+          wallet = { address: response.publicKey.toString() };
+          
+          elements.walletAddress.textContent = formatAddress(wallet.address);
+          
+          await loadUserStats();
+          
+          elements.walletInfo.style.display = 'block';
+          elements.transferSection.style.display = 'block';
+          elements.shrineSection.style.display = 'block';
+          
+          elements.connectBtn.textContent = '✅ Connected';
+          elements.connectBtn.style.background = '#14F195';
+          elements.connectBtn.classList.add('glow');
+          
+          showStatus('🎉 Phantom wallet connected successfully!', 'success');
+          updateFaithLevel();
+        }
+        
+      } catch (error) {
+        console.error('Wallet connection failed:', error);
+        showStatus(`❌ Connection failed: ${error.message}`, 'error');
+        resetConnectButton();
+      }
+    }
+
+    function resetConnectButton() {
+      elements.connectBtn.disabled = false;
+      elements.connectBtn.classList.remove('loading');
+      elements.connectBtn.style.background = '';
+      elements.connectBtn.classList.remove('glow');
+      
+      if (currentNetwork === 'demo') {
+        elements.connectBtn.textContent = 'Connect Demo Wallet';
+      } else {
+        elements.connectBtn.textContent = 'Connect Phantom Wallet';
+      }
+    }
+
+    function updateTokenBalance() {
+      if (currentNetwork === 'demo') {
+        elements.tokenBalance.textContent = formatNumber(demoTokenBalance, 2);
+      }
+    }
+
+    async function simulateConnection() {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+    }
+
+    // ===== USER STATS & FAITH SYSTEM =====
+    function loadUserStats() {
+      if (currentNetwork === 'demo') {
+        const savedStats = localStorage.getItem('demoUserStats');
+        if (savedStats) {
+          const parsed = JSON.parse(savedStats);
+          userStats = parsed.stats;
+          demoTokenBalance = parsed.balance;
+        }
+      } else {
+        const savedStats = localStorage.getItem(`userStats_${wallet.address}`);
+        if (savedStats) {
+          userStats = JSON.parse(savedStats);
+        }
+      }
+      updateUI();
+    }
+
+    function saveUserStats() {
+      if (currentNetwork === 'demo') {
+        localStorage.setItem('demoUserStats', JSON.stringify({
+          stats: userStats,
+          balance: demoTokenBalance
+        }));
+      } else {
+        localStorage.setItem(`userStats_${wallet.address}`, JSON.stringify(userStats));
+      }
+    }
+
+    function updateFaithLevel() {
+      const total = userStats.totalOfferings;
+      let level = 'Seeker';
+      let color = '#666';
+      let description = 'Begin your spiritual journey';
+      
+      if (total >= 10000) {
+        level = '🌟 Prophet';
+        color = '#FFD700';
+        description = 'Enlightened guide of the faithful';
+      } else if (total >= 5000) {
+        level = '⚡ Evangelist';
+        color = '#FF6B35';
+        description = 'Spreader of the sacred word';
+      } else if (total >= 1000) {
+        level = '🔥 Devoted';
+        color = '#FF4081';
+        description = 'Unwavering in faith';
+      } else if (total >= 500) {
+        level = '💎 Believer';
+        color = '#14F195';
+        description = 'Strong in conviction';
+      } else if (total >= 100) {
+        level = '🌙 Faithful';
+        color = '#9945FF';
+        description = 'Growing in understanding';
+      } else if (total > 0) {
+        level = '✨ Initiate';
+        color = '#87CEEB';
+        description = 'First steps taken';
+      }
+      
+      elements.faithLevel.innerHTML = `${level}<br><small style="font-size: 0.8rem; opacity: 0.8;">${description}</small>`;
+      elements.faithLevel.style.color = color;
+    }
+
+    function updateUI() {
+      elements.totalOfferings.textContent = formatNumber(userStats.totalOfferings, 2);
+      elements.totalPrayers.textContent = userStats.totalPrayers;
+      updateFaithLevel();
+      updateOfferingHistory();
+      updateTokenBalance();
+    }
+
+    function updateOfferingHistory() {
+      const historyHtml = userStats.offerings.slice(-5).reverse().map(offering => `
+        <div class="offering-item">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span>${formatNumber(offering.amount)} tokens</span>
+            <span style="color: #888; font-size: 0.8rem;">${new Date(offering.timestamp).toLocaleDateString()}</span>
+          </div>
+          ${offering.prayer ? `<div style="font-style: italic; color: #ccc; font-size: 0.85rem;">"${offering.prayer}"</div>` : ''}
+        </div>
+      `).join('');
+      
+      if (historyHtml) {
+        elements.offeringHistory.innerHTML = `
+          <h4 style="color: #9945FF; margin-bottom: 1rem;">Your Recent Offerings</h4>
+          ${historyHtml}
+        `;
+      }
+    }
+
+    function loadSampleOfferings() {
+      // Add some sample community offerings for demo purposes
+      const sampleOfferings = [
+        { amount: 250, prayer: "Grateful for abundance flowing into my life 🙏", timestamp: Date.now() - 86400000 },
+        { amount: 500, prayer: "May peace and prosperity bless us all ✨", timestamp: Date.now() - 172800000 },
+        { amount: 100, prayer: "Sending love to the Echo Circle family 💚", timestamp: Date.now() - 259200000 }
+      ];
+      
+      const communityHtml = sampleOfferings.map(offering => `
+        <div class="offering-item">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span>${formatNumber(offering.amount)} tokens</span>
+            <span style="color: #888; font-size: 0.8rem;">${new Date(offering.timestamp).toLocaleDateString()}</span>
+          </div>
+          <div style="font-style: italic; color: #ccc; font-size: 0.85rem;">"${offering.prayer}"</div>
+        </div>
+      `).join('');
+      
+      if (userStats.offerings.length === 0) {
+        elements.offeringHistory.innerHTML = `
+          <h4 style="color: #9945FF; margin-bottom: 1rem;">Recent Community Offerings</h4>
+          ${communityHtml}
+        `;
+      }
+    }
+
+    // ===== TRANSFER FUNCTIONS =====
+    async function makeOffering() {
+      if (!wallet) {
+        showStatus('❌ Please connect your wallet first', 'error');
+        return;
+      }
+
+      const amount = parseFloat(elements.tokenAmount.value);
+      const prayer = elements.prayerMessage.value.trim();
+
+      if (!amount || amount <= 0) {
+        showStatus('❌ Please enter a valid amount', 'error');
+        return;
+      }
+
+      if (amount < 0.1) {
+        showStatus('❌ Minimum offering is 0.1 tokens', 'error');
+        return;
+      }
+
+      if (currentNetwork === 'demo' && amount > demoTokenBalance) {
+        showStatus('❌ Insufficient token balance', 'error');
+        return;
+      }
+
+      try {
+        elements.transferBtn.textContent = '🔄 Processing Offering...';
+        elements.transferBtn.disabled = true;
+        elements.transferBtn.classList.add('loading');
+        
+        showStatus('🔄 Creating sacred transaction...', 'info', 0);
+
+        // Simulate transaction
+        await simulateTransaction(amount, prayer);
+        
+        // Update balances and stats
+        if (currentNetwork === 'demo') {
+          demoTokenBalance -= amount;
+        }
+        
+        userStats.totalOfferings += amount;
+        if (prayer) userStats.totalPrayers++;
+        
+        userStats.offerings.push({
+          amount: amount,
+          prayer: prayer,
+          timestamp: Date.now(),
+          txHash: 'demo_' + Date.now()
+        });
+        
+        saveUserStats();
+        updateUI();
+        
+        // Clear form
+        elements.tokenAmount.value = '';
+        elements.prayerMessage.value = '';
+        
+        showStatus(`🎉 Offering of ${formatNumber(amount)} tokens accepted! Your faith grows stronger.`, 'success');
+        
+        // Add visual effects
+        elements.shrineSection.classList.add('glow');
+        setTimeout(() => {
+          elements.shrineSection.classList.remove('glow');
+        }, 2000);
+        
+      } catch (error) {
+        console.error('Transfer failed:', error);
+        showStatus(`❌ Offering failed: ${error.message}`, 'error');
+      } finally {
+        elements.transferBtn.textContent = '🚀 Send Offering';
+        elements.transferBtn.disabled = false;
+        elements.transferBtn.classList.remove('loading');
+      }
+    }
+
+    async function simulateTransaction(amount, prayer) {
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Simulate potential errors (2% chance)
+      if (Math.random() < 0.02) {
+        throw new Error('Network congestion. Please try again.');
+      }
+      
+      return {
+        signature: 'demo_transaction_' + Date.now(),
+        success: true
+      };
+    }
+
+    // ===== EVENT LISTENERS =====
+    elements.connectBtn.addEventListener('click', connectWallet);
+    elements.transferBtn.addEventListener('click', makeOffering);
+    
+    elements.walletAddressDiv.addEventListener('click', () => {
+      if (wallet) {
+        copyToClipboard(wallet.address);
+      }
+    });
+
+    // Network switcher
+    document.querySelectorAll('.network-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        switchNetwork(btn.dataset.network);
+      });
+    });
+
+    // Add placeholder prayer suggestion
+    elements.prayerMessage.addEventListener('focus', () => {
+      if (!elements.prayerMessage.value) {
+        const randomPrayer = samplePrayers[Math.floor(Math.random() * samplePrayers.length)];
+        elements.prayerMessage.setAttribute('placeholder', `e.g. "${randomPrayer}"`);
+      }
+    });
+
+    // Reset placeholder when unfocused
+    elements.prayerMessage.addEventListener('blur', () => {
+      if (!elements.prayerMessage.value) {
+        elements.prayerMessage.setAttribute('placeholder', 'Share your hopes, dreams, and manifestations with the community...');
+      }
+    });
+
+    // ===== INITIALIZATION =====
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('🕯️ Digital Shrine initialized');
+      
+      // Load saved demo data if exists
+      if (currentNetwork === 'demo') {
+        const savedData = localStorage.getItem('demoUserStats');
+        if (savedData) {
+          const parsed = JSON.parse(savedData);
+          demoTokenBalance = parsed.balance || 10000;
+          console.log('Loaded demo balance:', demoTokenBalance);
+        }
+      }
+    });
+
+    // ===== DEMO RESET FUNCTION (for testing) =====
+    function resetDemoData() {
+      localStorage.removeItem('demoUserStats');
+      demoTokenBalance = 10000;
+      userStats = {
+        totalOfferings: 0,
+        totalPrayers: 0,
+        offerings: []
+      };
+      updateUI();
+      showStatus('🔄 Demo data reset! You have 10,000 tokens again.', 'info');
+    }
+
+    // Add reset functionality (can be called from console for testing)
+    window.resetDemo = resetDemoData;
+  </script>
 </body>
 </html>
