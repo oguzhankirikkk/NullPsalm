@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Echo Circle</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black; /* ✨ Kenarlar siyah olacak */
+      background-image: url('HUSH.jpg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      background-size: contain;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+
+    .content {
+      z-index: 2;
+      text-align: center;
+    }
+
+    .coming-soon {
+      font-size: 3em;
+      letter-spacing: 3px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    /* Ana sayfaya dönme butonu */
+    .back-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(20, 20, 20, 0.8);
+      padding: 0.5rem 1rem;
+      border: 1px solid #444;
+      color: #ccc;
+      text-decoration: none;
+      border-radius: 5px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .back-link:hover {
+      background: rgba(40, 40, 40, 0.9);
+      border-color: #666;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">← Return to Null Psalm</a>
+
+  <div class="overlay"></div>
+  <div class="content">
+    <div class="coming-soon">Coming Soon</div>
+  </div>
+</body>
+</html>
